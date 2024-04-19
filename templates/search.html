@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/fontawsome.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <title>Users</title>
+  </head>
+  <body>
+    <nav class="navbar fixed-top navbar-dark">
+      <div class="container bg-light">
+        <form action="{% url 'search' %}" method="GET">
+          <div class="input-group">
+            <input
+              type="text"
+              name="search"
+              placeholder="Search"
+              class="form-control"
+            />
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </form>
+        <div
+          class="me-auto ms-3 text-primary header d-flex hstack gap-2 text-align-center"
+        >
+        {% if my_profile.profile_picture  %}
+          <img
+              src="{{my_profile.profile_picture.url}}"
+              alt=""
+              class="img-fluid rounded-circle"
+              style="width: 40px; height:40px"
+            />
+        {% else %}
+          <img
+            src="https://bootdey.com/img/Content/avatar/avatar1.png"
+            alt=""
+            class="img-fluid rounded-circle"
+            style="width: 40px"
+          />
+        {% endif %}
+          <h2>{{user.full_name}}</h2>
+          <a href="{% url 'index' %}" class="btn btn-primary">Home</a>
+       
+
+          <a href="{% url 'user_profile' %}" class="btn btn-primary">Profile</a>
+          <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="fixed-top mt-3 message d-flex justify-content-center align-items-center">
+      <div
+        id="message-container"
+        style="
+          padding: 5px 10px;
+          display: flex;
+          justify-content: space-between;
+          background-color: rgb(76, 176, 206);
+          width: 25rem;
+          border-radius: 10px;
+          align-items: center;
+          text-align: center;
+          display: none;
+        "
+      >
+        <span id="close-message" style="float: right; cursor: pointer"
+          >&times;</span
+        >
+      </div>
+    </div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-6 vstack gap-3 offset-3 mt-3">
+          <h1>Users Found: ({{users.count}})</h1>
+
+          {% for user in users %}
+
+          <div class="card rounded-4 pb-3" style="width: 25rem">
+            
+            {% for profile in user_profiles %}
+              {% if profile.user == user %} 
+                {% if profile.profile_picture %}
+                  <img
+                    src="{{profile.profile_picture.url}}"
+                    class="card-img-top"
+                    alt=""
+                  />
+                {% else %}
+
+                  <img
+                    src="https://bootdey.com/img/Content/avatar/avatar2.png"
+                    class="card-img-top"
+                    alt=""
+                  />
+                {% endif %}
+              {% endif %} 
+            {% endfor %}
+            <div class="card-body">
+              <h5 class="card-title">{{user.full_name}}</h5>
+              {% if user.is_friend %}
+              <a href="{% url 'unfriend' user.id %}" class="btn btn-warning"
+                >Unfriend</a
+              >
+              {% else %}
+              <a
+                data-url="{% url 'send_request' user.id %}"
+                data-user_id="{{user.id}}"
+                class="btn btn-primary friend-request"
+                >Send Friend Request</a
+              >
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <script>
+      const requestButton = document.querySelectorAll(".friend-request");
+      const messageContainer = document.getElementById("message-container");
+      const closeMessage = document.getElementById("close-message");
+
+      for (let i = 0; i < requestButton.length; i++) {
+        requestButton[i].addEventListener("click", function (event) {
+          const url = requestButton[i].dataset.url;
+          user_id = requestButton[i].getAttribute("data-user_id");
+
+          fetch(url).then((response) =>
+            response.json().then((response) => {
+              
+              messageContainer.style.display = "block";
+
+              messageContainer.innerHTML = `<p class="fw-bold">${response.message} <span id="close-message" style="float: right; cursor: pointer"
+                >&times;</span
+              ></p>
+              `;
+            })
+          );
+        });
+      }
+      document.body.addEventListener("click", function (event) {
+        if (event.target.id === "close-message") {
+          messageContainer.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

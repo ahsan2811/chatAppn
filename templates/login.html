@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/fontawsome.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <title>Login</title>
+  </head>
+  <body>
+    <!-- form -->
+    <div class="container">
+      <div class="row">
+        <div class="col-6 text-white mt-5 offset-3">
+          <div class="card bg-dark text-white rounded-4">
+            <div class="card-body">
+              <form
+                action="{% url 'login' %}"
+                method="POST"
+                class="vstack gap-3"
+              >
+                {% csrf_token %}
+                <h2>Login</h2>
+                <input
+                  type="email"
+                  class="form-control form-control-lg"
+                  name="email"
+                  id=""
+                  placeholder="Email Address"
+                />
+                <input
+                  type="password"
+                  class="form-control form-control-lg"
+                  name="password"
+                  placeholder="Password"
+                />
+                <button type="submit" class="btn btn-warning fw-bold btn-lg">
+                  Login
+                </button>
+
+                <p>
+                  Don't have an account?
+                  <a href="{% url 'register' %}" class="text-white">Register</a>
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
