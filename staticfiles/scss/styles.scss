@@ -1,0 +1,39 @@
+$primary: #3333;
+body {
+  background-color: white;
+}
+
+a {
+  text-decoration: none;
+}
+.scrollable-column {
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+}
+
+.my-corners-me {
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.my-corners-to {
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.rounded-circle-bg-primary {
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff; /* Primary color */
+  border-radius: 50%; /* This creates the circle shape */
+}
+
+.rounded-circle-bg-seen {
+  width: 10px;
+  height: 10px;
+  background-color: rgb(0, 238, 20); /* Primary color */
+  border-radius: 50%; /* This creates the circle shape */
+}
+// .user-container {
+//   max-height: calc(100vh - 12rem); /* Adjust as needed based on navbar height */
+//   overflow: auto; /* Enable scrolling for excess content */
+// }
